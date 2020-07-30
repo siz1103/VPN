@@ -27,8 +27,7 @@ check_iniziali(){
 	fi
 
 	vpn_private_subnet=192.168.253.0/24
-	network=$(ipcalc $vpn_private_subnet|grep Address |awk '{print $2}')
-	netmask=$(ipcalc $vpn_private_subnet|grep Netmask |awk '{print $2}')
+
 }
 
 #Generazione configurazione server
@@ -230,6 +229,9 @@ echo "iptables-persistent iptables-persistent/autosave_v4 select true" |debconf-
 
 apt-get update  &>/dev/null
 apt-get install -y openvpn easy-rsa ipcalc iptables-persistent &>/dev/null
+
+network=$(ipcalc $vpn_private_subnet|grep Address |awk '{print $2}')
+netmask=$(ipcalc $vpn_private_subnet|grep Netmask |awk '{print $2}')
 
 #Creazione delle directory necessarie e importazione file EasyRSA
 mkdir -p /etc/openvpn/ccd
