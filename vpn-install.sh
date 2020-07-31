@@ -340,13 +340,13 @@ while [[ -z $risposta ]]; do
 done
 
 echo
-echo " _._._._._._._._._._._._._._._._._._._.__._._._._._._._._._._._._._._._._._._._._._"
-echo "|                                                                                  |"
-echo "|   La creazione della VPN RoadWarrior o dei client è terminata                    |"
-echo "|   I file da importare sui client si trovano nella cartella /etc/openvpn/client   |"
-echo "|   Puoi scaricarli con un client SFTP tipo Filezilla, o il tuo preferito          |"
-echo "|                                                                                  |"
-echo "|   Per ogni segnalazione,richiesta, o consiglio, puoi scrivere a admin@szini.it   |"
-echo "|   Grazie per aver utilizzato questo script                                       |"
-echo "|_._._._._._._._._._._._._._._._._._._.__._._._._._._._._._._._._._._._._._._._._._|"
+echo " _._._._._._._._._._._._._._._._._._._.__._._._._._._._._._._._._._._._._._._._._._._._."
+echo "|                                                                                       |"
+echo "|   La creazione della VPN RoadWarrior o dei client è terminata                         |"
+echo "|   I file da importare sui client si trovano nella cartella /etc/openvpn/client        |"
+echo "|   Puoi scaricarli con un client SFTP tipo Filezilla, o il tuo preferito               |"
+echo "|                                                                                       |"
+echo "|   Per ogni segnalazione,richiesta, o consiglio, puoi scrivere a techetrek@gmail.com   |"
+echo "|   Grazie per aver utilizzato questo script                                            |"
+echo "|_._._._._._._._._._._._._._._._._._._.__._._._._._._._._._._._._._._._._._._._._._._._.|"
 echo
