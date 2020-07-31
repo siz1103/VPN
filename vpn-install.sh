@@ -7,8 +7,8 @@
 check_iniziali(){
 	#Verifica che lo script sia eseguito come root
 	if [[ "$EUID" -ne 0 ]]; then
-		echo "	- ATTENZIONE!!! Lo script va eseguito con privilegi di root..."
-		echo "	- Uscita in corso... "
+		echo "  - ATTENZIONE!!! Lo script va eseguito con privilegi di root..."
+		echo "  - Uscita in corso... "
 		exit
 	fi
 
@@ -18,13 +18,13 @@ check_iniziali(){
 		versione_os=$(grep 'VERSION_ID' /etc/os-release | cut -d '"' -f 2 | tr -d '.')
 	  nome_server=$(cat /etc/hostname )
 	else
-	  echo "	- ATTENZIONE!!! Per ora lo script è compatibile solo con Ubuntu..."
-		echo "	- Uscita in corso... "
+	  echo "  - ATTENZIONE!!! Per ora lo script è compatibile solo con Ubuntu..."
+		echo "  - Uscita in corso... "
 	  exit
 	fi
 	if [[ "$os" == "ubuntu" && "$versione_os" -lt 1804 ]]; then
-			echo "	- ATTENZIONE!!! Per eseguire lo script serve almeno la versione 18.04 di Ubuntu ..."
-			echo "	- Uscita in corso... "
+			echo "  - ATTENZIONE!!! Per eseguire lo script serve almeno la versione 18.04 di Ubuntu ..."
+			echo "  - Uscita in corso... "
 		exit
 	fi
 
@@ -35,7 +35,7 @@ check_iniziali(){
 #Generazione configurazione server
 nuovo_server(){
 echo
-echo "	- Creazione del file di configurazione in corso ..."
+echo "  - Creazione del file di configurazione in corso ..."
 echo
 sleep 2
 echo "local $ip
@@ -69,7 +69,7 @@ fi
 
 nuovo_client(){
 echo
-echo "	- Creazione del client in corso ..."
+echo "  - Creazione del client in corso ..."
 echo
 sleep 2
 parametri=/etc/openvpn/client/$nome_server.param
@@ -144,46 +144,46 @@ scelta_parametri(){
 		server)
 			if [[ ! -e /etc/openvpn/server/$nome_server.conf ]]; then
 				echo
-	  		echo '	- Creazione della configurazione in corso, puoi scegliere i parametri o mantenere quelli preimpostati'
+	  		echo "  - Creazione della configurazione in corso, puoi scegliere i parametri o mantenere quelli preimpostati"
 	  		echo
 	  		if [[ $(ip -4 addr | grep inet | grep -vEc '127(\.[0-9]{1,3}){3}') -eq 1 ]]; then
 	  			ip=$(ip -4 addr | grep inet | grep -vE '127(\.[0-9]{1,3}){3}' | cut -d '/' -f 1 | grep -oE '[0-9]{1,3}(\.[0-9]{1,3}){3}')
 	  		else
 	  			multi_ip=$(ip -4 addr | grep inet | grep -vEc '127(\.[0-9]{1,3}){3}')
 	  			echo
-	  			echo "	 - Sul server è stato rilevato più di un IP, quale vuoi usare?"
+	  			echo "  - Sul server è stato rilevato più di un IP, quale vuoi usare?"
 					echo
 	  			ip -4 addr | grep inet | grep -vE '127(\.[0-9]{1,3}){3}' | cut -d '/' -f 1 | grep -oE '[0-9]{1,3}(\.[0-9]{1,3}){3}' | nl -s ') '
-	  			read -p "	- Indirizzo IPv4 [1]: " ip_scelto
+	  			read -p "  - Indirizzo IPv4 [1]: " ip_scelto
 	  			until [[ -z "$multi_ip" || "$multi_ip" =~ ^[0-9]+$ && "$ip_scelto" -le "$multi_ip" ]]; do
 	  				echo "	- $multi_ip: scelta errata. Inserirla nuovamente"
-	  				read -p "	- Indirizzo IPv4 [1]: " ip_scelto
+	  				read -p "  - Indirizzo IPv4 [1]: " ip_scelto
 	  			done
 	  			[[ -z "$multi_ip" ]] && $multi_ip="1"
 	  			ip=$(ip -4 addr | grep inet | grep -vE '127(\.[0-9]{1,3}){3}' | cut -d '/' -f 1 | grep -oE '[0-9]{1,3}(\.[0-9]{1,3}){3}' | sed -n "$ip_scelto"p)
 	  		fi
 	  		if echo "$ip" | grep -qE '^(10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.|192\.168)'; then
 	  			echo
-	  			echo "	- Non è stato rilevato un ip pubblico, indicare l'indirizzo IP con cui il server viene raggiunto"
+	  			echo "  - Non è stato rilevato un ip pubblico, indicare l'indirizzo IP con cui il server viene raggiunto"
 					echo
 	  			#ip_rilevato=$(grep -m 1 -oE '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' <<< "$(wget -T 10 -t 1 -4qO- "http://ip1.dynupdate.no-ip.com/" || curl -m 10 -4Ls "http://ip1.dynupdate.no-ip.com/")")
 					ip_rilevato=$(grep -m 1 -oE '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' <<< "$(wget -T 10 -t 1 -4qO- "http://ifconfig.me/" || curl -m 10 -4Ls "http://ifconfig.me/")")
-	  			read -p "IP Pubblico [$ip_rilevato]: " ip_pubblico
+	  			read -p "  - IP Pubblico [$ip_rilevato]: " ip_pubblico
 	  			until [[ -n "$ip_rilevato" || -n "$ip_pubblico" ]]; do
-	  				echo "	- L'IP inserito non è corretto."
-	  				read -p "	- IP Pubblico: " ip_pubblico
+	  				echo "  - L'IP inserito non è corretto."
+	  				read -p "  - IP Pubblico: " ip_pubblico
 	  			done
 	  			[[ -z "$ip_pubblico" ]] && $ip_pubblico="$ip_rilevato"
 	  		fi
 	  		echo
-	  		echo "	- Che protocollo vuoi usare?"
-	  		echo "   	1) UDP (raccomandato)"
-	  		echo "   	2) TCP"
-	  		read -p "	- Protocollo [1]: " protocollo
+	  		echo "  - Che protocollo vuoi usare?"
+	  		echo "    1) UDP (raccomandato)"
+	  		echo "    2) TCP"
+	  		read -p "  - Protocollo [1]: " protocollo
 	  		until [[ -z "$protocollo" || "$protocollo" =~ ^[12]$ ]]; do
 					echo
-	  			echo "	- $protocollo: scelta non valida."
-	  			read -p "	- Protocollo [1]: " protocollo
+	  			echo "  - $protocollo: scelta non valida."
+	  			read -p "  - Protocollo [1]: " protocollo
 	  		done
 	  		case "$protocollo" in
 	  			1|"")
@@ -194,19 +194,26 @@ scelta_parametri(){
 	  			;;
 	  		esac
 	  		echo
-	  		echo "	- Su che porta vuoi attivare la VPN?"
-	  		read -p "	- Porta [1194]: " porta
-	  		if [ "$(netstat -tulpn | grep $porta )" ]; then
-	    		porta_utilizzata=1
-	  		else
-	    		porta_utilizzata=0
-	  		fi
-	  		echo $porta_utilizzata
+	  		echo "  - Su che porta vuoi attivare la VPN?"
+	  		read -p "  - Porta [1194]: " porta
+				if [ -z "$porta" ]; then
+					if [ "$(netstat -tulpn | grep 1194 )" ]; then
+							porta_utilizzata=1
+	    			else
+	      			porta_utilizzata=0
+	    			fi
+				else
+	  			if [ "$(netstat -tulpn | grep $porta )" ]; then
+	    			porta_utilizzata=1
+	  			else
+	    			porta_utilizzata=0
+	  			fi
+				fi
 	  		until [[ "$porta_utilizzata" = "0" && ( -z "$porta" || "$porta" =~ ^[0-9]+$ && "$porta" -le 65535 ) ]]; do
 					echo
-	  			echo "	- $porta: porta non valida."
+	  			echo "  - $porta: porta non valida."
 					echo
-	  			read -p "	- Porta [1194]: " porta
+	  			read -p "  - Porta [1194]: " porta
 					if [ -z "$porta" ]; then
 						if [ "$(netstat -tulpn | grep 1194 )" ]; then
 							porta_utilizzata=1
@@ -229,11 +236,11 @@ scelta_parametri(){
 		;;
 		client)
 			echo
-			read -p "	- Scegli un nome da assegnare al client: " unsanitized_client
+			read -p "  - Scegli un nome da assegnare al client: " unsanitized_client
 			client=$(sed 's/[^0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-]/_/g' <<< "$unsanitized_client")
 			until [[ ! -f /etc/openvpn/client/$client.ovpn && ! -e /etc/openvpn/easy-rsa/keys/$client.crt && ! -z $unsanitized_client ]]; do
 				echo
-				read -p "	- Il nome del client non è utilizzabile, specificarne un altro: " unsanitized_client
+				read -p "  - Il nome del client non è utilizzabile, specificarne un altro: " unsanitized_client
 				client=$(sed 's/[^0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-]/_/g' <<< "$unsanitized_client")
 			done
 			[[ -z "$client" ]]
@@ -257,7 +264,7 @@ netmask=$(ipcalc $vpn_private_subnet|grep Netmask |awk '{print $2}')
 
 #Creazione delle directory necessarie e importazione file EasyRSA
 echo
-echo "	- Creazione delle cartelle necessarie in corso ..."
+echo "  - Creazione delle cartelle necessarie in corso ..."
 sleep 2
 mkdir -p /etc/openvpn/ccd
 mkdir -p /etc/openvpn/easy-rsa
@@ -269,7 +276,7 @@ ln -sfn /usr/share/easy-rsa/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/openssl.cnf
 #Generazione certificati server
 if [[ ! -e /etc/openvpn/easy-rsa/keys/ca.crt && ! -e /etc/openvpn/easy-rsa/keys/$nome_server.crt && ! -e /etc/openvpn/easy-rsa/keys/$nome_server.key && ! -e /etc/openvpn/easy-rsa/keys/dh.pem ]]; then
 	echo
-	echo "	- Creazione dei certificati in corso ..."
+	echo "  - Creazione dei certificati in corso ..."
 	sleep 2
 	genera_certificati "server"
 fi
@@ -283,7 +290,7 @@ nuovo_server
 
 #Generazione certificati client
 while [[ -z $risposta || "$risposta" = "Y" || "$risposta" = "y" ]]; do
-	read -p "Aggiungere un nuovo client? [y/n]: " risposta
+	read -p "  - Aggiungere un nuovo client? [y/n]: " risposta
 	case "$risposta" in
 		y|Y)
 		scelta_parametri "client"
@@ -295,7 +302,7 @@ while [[ -z $risposta || "$risposta" = "Y" || "$risposta" = "y" ]]; do
 		;;
 		*)
 		echo
-		echo "	- ATTENZIONE!!! Scelta non valida..."
+		echo "  - ATTENZIONE!!! Scelta non valida..."
 		echo
 		;;
 	esac
@@ -305,9 +312,9 @@ systemctl enable openvpn@$nome_server
 systemctl start openvpn@$nome_server
 
 unset risposta
-while [[ -z $risposta || "$risposta" = "Y" || "$risposta" = "y" ]]; do
+while [[ -z $risposta ]]; do
 	echo
-	read -p "	- Vuoi che vengano aggiunte automaticamente le regole al firewall? [y/n]: " risposta
+	read -p "  - Vuoi che vengano aggiunte automaticamente le regole al firewall? [y/n]: " risposta
 	case "$risposta" in
 		y|Y)
 		export DEBIAN_FRONTEND=noninteractive
@@ -320,25 +327,26 @@ while [[ -z $risposta || "$risposta" = "Y" || "$risposta" = "y" ]]; do
 		iptables-save &>/dev/null
 		;;
 		n|N)
-		echo "	- Ricordati di abilitare il forward e aggiungere questa regola al firewall: "
-		echo "		iptables -t nat -A POSTROUTING -s $vpn_private_subnet ! -d $vpn_private_subnet -j SNAT --to-source $ip"
+		echo "  - Ricordati di abilitare il forward e aggiungere questa regola al firewall: "
+		echo "    iptables -t nat -A POSTROUTING -s $vpn_private_subnet ! -d $vpn_private_subnet -j SNAT --to-source $ip"
 		;;
 		*)
 		echo
-		echo " - ATTENZIONE!!! Scelta non valida... "
+		echo "  - ATTENZIONE!!! Scelta non valida... "
 		echo
+		unset risposta
+		;;
 	esac
 done
 
 echo
-echo " _._._._._._._._._._._._._._._._._._._.__._._._._._._._._._._._._._._._._._._._"
-echo "|										     |"
-echo "| La creazione della VPN RoadWarrior o dei client è terminata  		     |"
-echo "| I file da importare sui client si trovano nella cartella /etc/openvpn/client |"
-echo "| Puoi scaricarli con un client SFTP tipo Filezilla, o il tuo preferito        |"
-echo "|										     |"
-echo "| Per ogni segnalazione,richiesta, o consiglio, puoi scrivere a admin@szini.it |"
-echo "| Grazie per aver utilizzato questo script				     |"
-echo "|										     |"
-echo "|_._._._._._._._._._._._._._._._._._._.__._._._._._._._._._._._._._._._._._._._|"
+echo " _._._._._._._._._._._._._._._._._._._.__._._._._._._._._._._._._._._._._._._._._._"
+echo "|                                                                                  |"
+echo "|   La creazione della VPN RoadWarrior o dei client è terminata                    |"
+echo "|   I file da importare sui client si trovano nella cartella /etc/openvpn/client   |"
+echo "|   Puoi scaricarli con un client SFTP tipo Filezilla, o il tuo preferito          |"
+echo "|                                                                                  |"
+echo "|   Per ogni segnalazione,richiesta, o consiglio, puoi scrivere a admin@szini.it   |"
+echo "|   Grazie per aver utilizzato questo script                                       |"
+echo "|_._._._._._._._._._._._._._._._._._._.__._._._._._._._._._._._._._._._._._._._._._|"
 echo
