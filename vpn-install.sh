@@ -308,8 +308,8 @@ while [[ -z $risposta || "$risposta" = "Y" || "$risposta" = "y" ]]; do
 	esac
 done
 
-systemctl enable openvpn@$nome_server
-systemctl start openvpn@$nome_server
+systemctl enable openvpn@$nome_server &>/dev/null
+systemctl start openvpn@$nome_server &>/dev/null
 
 unset risposta
 while [[ -z $risposta ]]; do
